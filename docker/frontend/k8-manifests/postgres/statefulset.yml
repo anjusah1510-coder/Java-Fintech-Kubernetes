@@ -6,7 +6,7 @@ metadata:
 
 spec:
   serviceName: postges-serviceName
-  replica:1
+  replica: 1
   selector:
     matchLabels:
       app: postgres
@@ -21,7 +21,7 @@ spec:
         kubernetes.io/hostname:worker2-k8s
       containers:
         - name: postgres
-          image:postgres:16-alpine
+          image:postgres: 16-alpine
           ports:
             -containerPort:5432
           envFrom:

@@ -16,7 +16,7 @@ metadata:
       spec:
         containers:
           -name: backend
-          image: anju1515/java-banking-backend:1.0
+          image: anju1515/java-banking-backend:1.1
           ports:
             -containerPort: 8080
           env:

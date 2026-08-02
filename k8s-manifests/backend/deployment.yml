@@ -28,16 +28,16 @@ metadata:
                 name: postgres-secret
                 key: POSTGRES_USER 
             -name: DB_PASSWORD
-              valueFrom:
+            valueFrom:
                 secretKeyRef:
                   name: postgres-secret
                   key: POSTGRES_PASSWORD  
             -name: JWT_SECRET
-              value:"3f8b9c1a7d2e4f6091b8c3a5d7e9f1023f8b9c1a7d2e4f6091b8c3a5d7e9f102"
+            value:"3f8b9c1a7d2e4f6091b8c3a5d7e9f1023f8b9c1a7d2e4f6091b8c3a5d7e9f102"
             -name: JWT_EXPIRATION_MS
-              value: "86400000"
+            value: "86400000"
             -name: CORS_ALLOWED_ORIGIN
-              value: "*"
+            value: "*"
           readinessProbe:
             httpGet:
               path: /actuator/health

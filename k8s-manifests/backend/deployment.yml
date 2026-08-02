@@ -4,43 +4,49 @@ metadata:
   name: backend
   namespace: banking
 
-  spec:
-    replicas: 1
-    selector:
-      matchlabels:
-        app: backend
-    template:
-      meatdata:
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: backend
+  template:
+    metadata:
       labels:
         app: backend
-      spec:
-        containers:
-          -name: backend
+    spec:
+      containers:
+        - name: backend
           image: anju1515/java-banking-backend:1.1
           ports:
-            -containerPort: 8080
+            - containerPort: 8080
           env:
-            -name: DB_URL
-            value: "jdbc:postgresql://postgres-svc.banking.svc.cluster.local:5432/bnakingdb"
-            -name: DB_USERNAME
-            valueFrom:
-              secretKeyRef:
-                name: postgres-secret
-                key: POSTGRES_USER 
-            -name: DB_PASSWORD
-            valueFrom:
+            - name: DB_URL
+              value: "jdbc:postgresql://postgres-svc.banking.svc.cluster.local:5432/bankingdb"
+
+            - name: DB_USERNAME
+              valueFrom:
                 secretKeyRef:
                   name: postgres-secret
-                  key: POSTGRES_PASSWORD  
-            -name: JWT_SECRET
-            value:"3f8b9c1a7d2e4f6091b8c3a5d7e9f1023f8b9c1a7d2e4f6091b8c3a5d7e9f102"
-            -name: JWT_EXPIRATION_MS
-            value: "86400000"
-            -name: CORS_ALLOWED_ORIGIN
-            value: "*"
+                  key: POSTGRES_USER
+
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secret
+                  key: POSTGRES_PASSWORD
+
+            - name: JWT_SECRET
+              value: "3f8b9c1a7d2e4f6091b8c3a5d7e9f1023f8b9c1a7d2e4f6091b8c3a5d7e9f102"
+
+            - name: JWT_EXPIRATION_MS
+              value: "86400000"
+
+            - name: CORS_ALLOWED_ORIGIN
+              value: "*"
+
           readinessProbe:
             httpGet:
               path: /actuator/health
               port: 8080
             initialDelaySeconds: 50
-            periodSeconds: 10
+            periodSeconds: 10 

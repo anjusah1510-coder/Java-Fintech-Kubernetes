@@ -23,7 +23,7 @@ metadata:
             -name: DB_URL
             value: "jdbc:postgresql://postgres-svc.banking.svc.cluster.local:5432/bnakingdb"
             -name: DB_USERNAME
-              valueFrom:
+            valueFrom:
               secretKeyRef:
                 name: postgres-secret
                 key: POSTGRES_USER 

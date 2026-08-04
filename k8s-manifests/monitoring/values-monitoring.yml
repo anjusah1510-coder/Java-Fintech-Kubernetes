@@ -63,8 +63,7 @@ alertmanager:
       - name: 'null'
       - name: 'discord-notifications'
         discord_configs:
-          - webhook_url: 'https://discord.com/api/webhooks/1533798400737153156/Z4wM0ym1VPyDZau7QbxoGHYzaz0a-7dnixVLkyoSD_F3rbqWS3sDl5hdMj82LlMUHkKR'
-
+          - webhook_url: 'https://discordapp.com/api/webhooks/1533799379708674150/fM_sq16ZnF43lmb1wJqAwUyobMNXCwEjK8Nr4e_hh1enBZ4otYHScJ9gPx0uYPojHiCZ'
 additionalPrometheusRulesMap:
   custom-crashloop-rule:
     groups:

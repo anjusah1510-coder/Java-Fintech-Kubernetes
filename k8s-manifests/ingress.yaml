@@ -1,31 +1,33 @@
-apiversion: networking.k8.io/v1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: banking-ingress
   namespace: banking
-  annotation:
+  annotations:
     nginx.ingress.kubernetes.io/rewrite-target: /
 
-  spec:
-    ingressClassname: nginx
-      -host: bank.anjushah.info
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: bank.anjushah.info
       http:
         paths:
-          -path: /
+          - path: /
             pathType: Prefix
             backend:
               service:
-              name: frontend-svc 
-              port: 
-                number: 80
-  -host: api.bank.anjushah.info
-  http:
-    paths:
-      -path: /
-      pathType: Prefix
-      backend:
-        service:
-          name: backend-svc 
-          port:
-            number: 8080
+                name: frontend-svc
+                port:
+                  number: 80
+
+    - host: api.bank.anjushah.info
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: backend-svc
+                port:
+                  number: 8080
 

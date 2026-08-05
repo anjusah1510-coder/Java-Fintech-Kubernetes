@@ -7,7 +7,8 @@ prometheus:
       volumeClaimTemplate:
         spec:
           storageClassName: local-path
-          accessModes: ["ReadWriteOnce"]
+          accessModes:
+            - ReadWriteOnce
           resources:
             requests:
               storage: 20Gi
@@ -20,7 +21,7 @@ prometheus:
         memory: 1Gi
 
 grafana:
-  nodeselector:
+  nodeSelector:
     kubernetes.io/hostname: monitoring-node
   persistence:
     enabled: true
@@ -39,7 +40,8 @@ alertmanager:
       volumeClaimTemplate:
         spec:
           storageClassName: local-path
-          accessModes: ["ReadWriteOnce"]
+          accessModes:
+            - ReadWriteOnce
           resources:
             requests:
               storage: 2Gi
@@ -47,23 +49,30 @@ alertmanager:
   service:
     type: NodePort
     nodePort: 30093
+
   config:
     global:
-      resolve_timeout: 5m    
+      resolve_timeout: 5m
+
     route:
-      receiver: 'discord-notifications'     
-      group_by: ['alertname']  
+      receiver: discord-notifications
+      group_by:
+        - alertname
       group_wait: 30s
       group_interval: 4h
+      repeat_interval: 4h
       routes:
-        - receiver: 'null'
+        - receiver: "null"
           matchers:
             - alertname =~ "Watchdog|Kube.*Unreachable|Alertmanager.*Failed.*|etcd.*"
+
     receivers:
-      - name: 'null'
-      - name: 'discord-notifications'
+      - name: "null"
+
+      - name: discord-notifications
         discord_configs:
-          - webhook_url: 'https://discordapp.com/api/webhooks/1533799379708674150/fM_sq16ZnF43lmb1wJqAwUyobMNXCwEjK8Nr4e_hh1enBZ4otYHScJ9gPx0uYPojHiCZ'
+          - webhook_url: "https://discordapp.com/api/webhooks/1533799379708674150/fM_sq16ZnF43lmb1wJqAwUyobMNXCwEjK8Nr4e_hh1enBZ4otYHScJ9gPx0uYPojHiCZ"
+
 additionalPrometheusRulesMap:
   custom-crashloop-rule:
     groups:
@@ -75,7 +84,8 @@ additionalPrometheusRulesMap:
             labels:
               severity: warning
             annotations:
-              description: "Pod {{ $labels.namespace }}/{{ $labels.pod }} is in CrashLoopBackOff"
+              summary: "Pod is CrashLooping"
+              description: "Pod {{ $labels.namespace }}/{{ $labels.pod }} is in CrashLoopBackOff."
 
           - alert: kubePodOOMKilled
             expr: kube_pod_container_status_last_terminated_reason{reason="OOMKilled"} == 1
@@ -83,4 +93,5 @@ additionalPrometheusRulesMap:
             labels:
               severity: critical
             annotations:
-              description: "Pod {{ $labels.namespace }}/{{ $labels.pod }} container {{ $labels.container }} was OOMKilled"
+              summary: "Container OOMKilled"
+              description: "Pod {{ $labels.namespace }}/{{ $labels.pod }} container {{ $labels.container }} was OOMKilled."

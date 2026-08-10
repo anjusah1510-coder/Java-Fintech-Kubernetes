@@ -11,7 +11,7 @@ RUN npm ci
 COPY frontend/ .
 
 
-ARG VITE_API_URL=http://api.bank.anjushah.info/api
+ARG VITE_API_URL=http://api.bank.anjushah.info:32192/api
 
 RUN npm run build
 
